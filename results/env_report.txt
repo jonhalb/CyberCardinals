@@ -1,0 +1,2 @@
+# One line per machine per run, appended by `make memcheck`:
+# date | user | cpu | ram | os | case | table size | peak RSS

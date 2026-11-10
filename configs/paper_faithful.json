@@ -1,0 +1,28 @@
+{
+  "name": "paper_faithful",
+  "description": "Settings the KAIROS paper states (Sec. 4.2, 4.3, 5, 5.1.1). Anything the paper does not state is marked UNSTATED and mirrored in docs/deviations.md.",
+  "decoder": "edge_type_cross_entropy",
+  "num_edge_types": 26,
+  "node_feature": "one_hot_node_type",
+  "node_state_dim": 100,
+  "neighbors": 20,
+  "edge_embedding_dim": 200,
+  "time_windows_per_graph": 1,
+  "graph_score": {"rule": "mean_of_errors_above_mean_plus_sd", "sd_multiplier": 1.5, "ddof": 0},
+  "threshold": "max_validation_score",
+  "optimizer": "adam",
+  "lr": 0.0001,
+  "epochs": 10,
+  "batch_size": 1024,
+  "attention_heads": 2,
+  "attention_dropout": 0.1,
+  "_provenance": {
+    "decoder": "paper Sec. 4.2 (MLP, cross-entropy). Paper says nine edge types; StreamSpot has 26, so output dim is 26 (deviation D-07)",
+    "node_state_dim, neighbors, edge_embedding_dim": "paper Sec. 5",
+    "time_windows_per_graph": "paper Sec. 5.1.1",
+    "graph_score": "paper Sec. 4.3.1 and 4.3.3; population SD is our choice (UNSTATED)",
+    "threshold": "paper: set from benign validation data (Sec. 4.3.3). 'Max' is from the authors' code (UNSTATED in paper)",
+    "node_feature": "UNSTATED for StreamSpot (no paths or IPs, so hierarchical hashing does not apply); one-hot type follows the authors' code",
+    "optimizer, lr, epochs, batch_size, attention_heads, attention_dropout": "UNSTATED in paper; values from the authors' StreamSpot code (confirm against source)"
+  }
+}

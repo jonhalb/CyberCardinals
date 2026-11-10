@@ -1,0 +1,20 @@
+# Data and models: large and reproducible from scripts
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.pt
+*.tar.gz
+*.tsv
+*.npz
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,19 @@
+{
+  "name": "authors_variant",
+  "description": "What the authors' StreamSpot code does (as summarised from the public repo; confirm against source). Used as an ablation, never as the headline.",
+  "decoder": "link_prediction_bce_random_negative",
+  "node_feature": "one_hot_node_type",
+  "memory_dim": 200,
+  "neighbors": 5,
+  "time_windows_per_graph": 1,
+  "graph_score": {"rule": "mean_loss"},
+  "threshold": "max_validation_score",
+  "optimizer": "adam",
+  "lr": 0.0001,
+  "epochs": 10,
+  "batch_size": 1024,
+  "attention_heads": 2,
+  "attention_dropout": 0.1,
+  "negative_sampling": "one random destination per event, drawn over the node-id range; seed the test pass too",
+  "authors_seed": 12345
+}
