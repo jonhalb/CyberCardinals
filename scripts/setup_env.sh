@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Staged install matching the authors' pinned versions (CPU build). Run on Linux or WSL2 Ubuntu 22.04.
 # These exact versions were verified to install and train on Linux x86_64, Python 3.9 (2026-11-09, pip + source builds).
-# The conda + data.pyg.org wheel route below is checked per machine in story M1-06: fix versions here AND in environment.yml.
+# The conda + data.pyg.org wheel route below is checked per machine in story M1-01: fix versions here AND in environment.yml.
 set -euo pipefail
 conda create -n kairos python=3.9 -y
 eval "$(conda shell.bash hook)"
