@@ -1,0 +1,24 @@
+{
+  "config": "paper_faithful",
+  "seed": 0,
+  "quick": false,
+  "epochs": 10,
+  "train_graphs": [
+    0,
+    100,
+    200,
+    400,
+    500
+  ],
+  "max_batches_per_graph": null,
+  "batch_size": 1024,
+  "lr": 0.0001,
+  "seconds_total": 165.5,
+  "first_epoch_loss": 1.866925,
+  "last_epoch_loss": 0.679795,
+  "git_commit": "010a53b",
+  "python": "3.9.25",
+  "torch": "1.13.1+cpu",
+  "torch_threads": 11,
+  "pythonhashseed": "0"
+}
