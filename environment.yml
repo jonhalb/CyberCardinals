@@ -1,4 +1,4 @@
-# UNVERIFIED on every machine until story M1-06. If pip resolution fails, use scripts/setup_env.sh.
+# UNVERIFIED on every machine until story M1-01. If pip resolution fails, use scripts/setup_env.sh.
 name: kairos
 channels:
   - defaults

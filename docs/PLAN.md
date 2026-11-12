@@ -28,7 +28,7 @@ Video Game / Download swap (docs/verification_2026-11-09.md).
 ## Milestones (docs/backlog.csv holds the stories and points)
 | Milestone | Contents | Rubric lines it feeds |
 |---|---|---|
-| M1 Setup and proposal evidence | repo, board, wiki, collaborators, vote, dates, environment, memcheck | Proposal, board, repo |
+| M1 Environment setup | pinned environment that installs from one script; memcheck on each laptop | Repo |
 | M2 Data and baselines | download, stats, graphs, tests, B0, B1, metrics, evaluation protocol | Pipeline completeness, comparison |
 | M3 Paper-faithful pipeline | encoder, decoder, training, evaluation, seeds, variant, cross-check | Fidelity, comparison, hygiene |
 | M4 Comparison, report, presentation | tables, Wiki, README, clean-checkout test, deck, dry run | Wiki, repo, presentation |

@@ -7,7 +7,7 @@ TP=100 TN=375 FP=0 FN=0, with precision, recall, accuracy and AUC all 1.000, usi
 120 validation graphs and 475 test graphs with one time window per graph. We rebuilt the pipeline ourselves and try to get those numbers again.
 
 ## Result
-Status: **not yet run.** This table is filled from `results/paper_faithful/comparison_seed0.md` by story M4-07.
+Status: **not yet run.** This table is filled from `results/paper_faithful/comparison_seed0.md` by story M4-06.
 
 | Metric | Paper (Table 4) | Ours (paper-faithful, seed 0) | Difference |
 |---|---|---|---|
