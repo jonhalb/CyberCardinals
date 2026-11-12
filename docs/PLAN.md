@@ -44,7 +44,7 @@ paper's method and comparison; 12-15 close gaps, report, rehearse. Real dates go
   with ranked reasons (a stated difference, an unstated choice, or an error, in that order; check our own work first).
 - Every divergence gets: which graphs were misclassified, their score against the threshold, and the cause we can support.
 
-## Open questions for Dr. Parra (story M1-05)
+## Open questions for Dr. Parra (team checklist in the README)
 1. Is StreamSpot-only scope acceptable (the DARPA data is terabytes)?
 2. Is using the authors' code as a reference and cross-check fine, given we write our own pipeline?
 3. Proposal weight: the kickoff deck says both 1% and 2%; the rubric says 1%.

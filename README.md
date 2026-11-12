@@ -45,6 +45,17 @@ make unit                                              # unit tests
 `src/kairos_repro/data` data pipeline · `model` our KAIROS model · `baselines` · `eval` metrics and comparison ·
 `configs/` paper-faithful and authors' variant settings · `docs/backlog.csv` the user stories behind the board.
 
+## Team checklist (course admin, not stories)
+These are chores, so they are tracked here and not on the board. Tick each one when it is done.
+
+- [ ] Repo, board and Wiki links submitted on Canvas; `gdparra-edu` and `cyberknowledge` added as collaborators
+- [ ] Commit-approach vote, shared weekly hours and meeting time recorded in `docs/team.md`
+- [ ] Proposal corrections in `docs/proposal_corrections.md` applied
+- [ ] Real dates from Canvas filled into `docs/schedule.md` and the milestones
+- [ ] Scope email sent to Dr. Parra; answers recorded in `docs/decisions/ADR-0001-scope.md`
+- [ ] Wiki sidebar published from `docs/wiki/_Sidebar.md`
+- [ ] Timed dry run under 15 minutes; fallback recording plays offline
+
 ## Individual Contribution Summary Table
 Story points come from the Project board; `scripts/contribution_table.py` recomputes this from `docs/backlog.csv`
 (keep its `status` column in step with the board). Commits are individual, per `docs/team.md`.
@@ -52,8 +63,8 @@ Story points come from the Project board; `scripts/contribution_table.py` recomp
 <!-- CONTRIB:START -->
 | Member | Stories done | Points earned | Points planned | Share of earned points |
 |---|---|---|---|---|
-| Jonas | 0 | 0 | 35 | 0.0% |
-| Emiliano | 0 | 0 | 36 | 0.0% |
-| Aaliyah | 0 | 0 | 34 | 0.0% |
-| **Team** | 0 | 0 | 105 | 100% |
+| Jonas | 0 | 0 | 31 | 0.0% |
+| Emiliano | 0 | 0 | 32 | 0.0% |
+| Aaliyah | 0 | 0 | 29 | 0.0% |
+| **Team** | 0 | 0 | 92 | 100% |
 <!-- CONTRIB:END -->

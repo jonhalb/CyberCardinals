@@ -1,4 +1,4 @@
-# Corrections to apply to the proposal (story M1-03)
+# Corrections to apply to the proposal (team checklist in the README)
 
 Checked against the paper and a read of the authors' repo.
 1. Repository: the code is at github.com/ubc-provenance/kairos (the paper still lists ProvenanceAnalytics/kairos).

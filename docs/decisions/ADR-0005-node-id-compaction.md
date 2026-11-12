@@ -14,5 +14,5 @@ only indices, so this is lossless within a graph. It drops any state carried acr
 local ids change those draws: note it in that ablation.
 
 Evidence. [x] distinct node count from `make stats` (5,044,482). [x] feasibility run 2026-11-11: full train + evaluate on a
-2-core, 8 GB machine; training peaked at 0.5 GB of RAM. [ ] memcheck on each team laptop (M1-07..09). [ ] M2-09: scores for one graph identical with local and
+2-core, 8 GB machine; training peaked at 0.5 GB of RAM. [ ] memcheck on each team laptop (M1-06). [ ] M2-09: scores for one graph identical with local and
 global ids.
