@@ -116,3 +116,16 @@ def test_contribution_table():
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "contribution_table.py")],
                        capture_output=True, text=True, cwd=ROOT)
     assert r.returncode == 0 and "Jonas" in r.stdout
+
+
+def test_localize_and_batches(tmp_path):
+    from kairos_repro.data.loading import localize, batches
+    build_graphs.build_from_lines(synth_lines(3), tmp_path)
+    g = {k: v for k, v in np.load(tmp_path / "graph_2.npz").items()}
+    loc = localize(g)
+    assert loc["src"].min() >= 0 and max(loc["src"].max(), loc["dst"].max()) == loc["num_nodes"] - 1
+    assert (g["src"][loc["src"] == loc["src"][0]] == g["src"][0]).all()      # same node -> same local id
+    assert len(set(zip(g["src"], g["dst"]))) == len(set(zip(loc["src"], loc["dst"])))  # edges preserved
+    bs = list(batches(loc, 4))
+    assert [len(b["t"]) for b in bs] == [4, 2] and bs[0]["msg"].shape == (4, 42)
+    assert all((np.diff(b["t"]) > 0).all() for b in bs)

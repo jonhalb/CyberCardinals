@@ -18,7 +18,7 @@
   "attention_dropout": 0.1,
   "_provenance": {
     "decoder": "paper Sec. 4.2 (MLP, cross-entropy). Paper says nine edge types; StreamSpot has 26, so output dim is 26 (deviation D-07)",
-    "node_state_dim, neighbors, edge_embedding_dim": "paper Sec. 5",
+    "node_state_dim, neighbors, edge_embedding_dim": "paper Sec. 5. edge_embedding_dim 200 = two 100-dim node embeddings concatenated (deviation D-18)",
     "time_windows_per_graph": "paper Sec. 5.1.1",
     "graph_score": "paper Sec. 4.3.1 and 4.3.3; population SD is our choice (UNSTATED)",
     "threshold": "paper: set from benign validation data (Sec. 4.3.3). 'Max' is from the authors' code (UNSTATED in paper)",

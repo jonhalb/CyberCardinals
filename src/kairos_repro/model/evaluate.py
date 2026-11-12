@@ -4,7 +4,8 @@
 
 Contract:
 - loads results/<config name>/model_seed{N}.pt
-- per-edge errors for each graph in VAL_IDS + TEST_IDS -> model.scoring.graph_score
+- per-edge errors for each graph in VAL_IDS + TEST_IDS (memory reset per graph, eval mode, no_grad)
+  -> model.scoring.graph_score
 - threshold = fit_threshold(validation scores); pred = predict(scores, threshold)
 - writes results/<config name>/graph_scores_seed{N}.csv through eval.scores_io.write_scores
 - one pass, deterministic at test time for the cross-entropy decoder

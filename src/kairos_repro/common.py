@@ -49,6 +49,9 @@ PAPER_SOURCE = "KAIROS (IEEE S&P 2024), Table 4, row 'Manzoor et al.'"
 PAPER_TABLE4 = {"TP": 100, "TN": 375, "FP": 0, "FN": 0,
                 "precision": 1.0, "recall": 1.0, "accuracy": 1.0, "auc": 1.0}
 
+# Paper Tables 7 and 8, Manzoor et al. rows: other systems on the same dataset (precision, recall, accuracy).
+PAPER_OTHER_SYSTEMS = {"Unicorn (Table 7)": (0.98, 0.93, 0.96), "ThreaTrace (Table 8)": (0.98, 0.99, 0.99)}
+
 # Paper Table 3 as printed: (average nodes, average edges). Keys are the paper's own row labels.
 PAPER_TABLE3 = {
     "YouTube": (8292, 113229), "Gmail": (6827, 37382), "Video Game": (8831, 310814),

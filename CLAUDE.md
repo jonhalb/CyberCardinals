@@ -25,12 +25,13 @@ Every value taken from it is a row in docs/deviations.md with its source.
 - **X, authors' repo run as-is (cross-check only):** results/authors_repo/, labelled as not our code.
 - **B0, do-nothing** and **B1, histogram distance** baselines on the same split, scored before the model.
 
-## Data facts (from the team plan; Phase 2 confirms)
+## Data facts (verified on the real file 2026-11-09, docs/verification_2026-11-09.md)
 all.tar.gz from github.com/sbustreamspot/sbustreamspot-data, SHA-256 1551d7eb...5d23cf (full value in
 src/kairos_repro/common.py). Columns: source-id, source-type, dest-id, dest-type, edge-type, graph-id.
 Graph ids: 0-99 YouTube, 100-199 Gmail, 200-299 VGame, 300-399 drive-by-download (ATTACK),
 400-499 Download, 500-599 CNN. Edge message = one-hot src type (8) + edge type (26) + dst type (8) = 42.
-t = 1-based file line. Node ids are compacted (ADR-0005). Splits live in src/kairos_repro/common.py; import, never retype.
+t = 1-based file line (the data has no timestamps). The model handles ONE graph at a time with local node ids
+and resets node memory between graphs (ADR-0005, `data.loading.localize`). Splits live in src/kairos_repro/common.py; import, never retype.
 
 ## Environment
 Python 3.9, torch 1.13.1 CPU, torch-geometric 2.0.0, scikit-learn 1.2.0, networkx 2.8.7. Do not upgrade PyG.

@@ -5,12 +5,14 @@ and record every decision the paper leaves open in docs/deviations.md.
 
 Spec
 ----
-Input   per edge: source/destination node ids (compacted), edge type, time t, 42-dim message
+Input   per edge: source/destination node ids (local to the graph: data.loading.localize), edge type, time t, 42-dim message
         [src node type one-hot | edge type one-hot | dst node type one-hot].
 Memory  node state s(v), dimension 100, initialised to zeros, updated with a GRU after each edge
-        (paper Sec. 4.2 "State Update"); PyG's TGNMemory is the building block.
+        (paper Sec. 4.2 "State Update"); PyG's TGNMemory is the building block. One graph at a
+        time: size the memory for the largest graph (9,284 nodes) and reset memory and neighbour
+        state between graphs (deviation D-17, ADR-0005). scripts/stack_check.py shows the PyG calls.
 Encoder TransformerConv (the UniMP-style layer) over the 20 most recent neighbours, producing a
-        200-dim edge embedding z from the node states, neighbour edge messages and time encodings.
+        200-dim edge embedding z (100 per endpoint, concatenated: D-18) from the node states, neighbour edge messages and time encodings.
         The edge being predicted must NOT leak into z (use states from just before t).
 Decoder MLP(z) -> logits over 26 edge types; loss = cross-entropy against the true edge type.
 Score   per-edge error = cross-entropy; graph score via model.scoring.graph_score().

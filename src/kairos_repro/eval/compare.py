@@ -50,6 +50,9 @@ def main() -> None:
     m = metrics_from_rows(rows)
     (a.run / ("metrics_seed%d.json" % a.seed)).write_text(json.dumps(m, indent=2))
     md = to_markdown(comparison_rows(PAPER_TABLE4, m), a.name)
+    if "auc_scores" in m:
+        md += ("\nAUC above is from the 0/1 predictions, so it depends on the threshold. AUC from the continuous "
+               "graph scores (threshold-free): %.3f.\n" % m["auc_scores"])
     (a.run / ("comparison_seed%d.md" % a.seed)).write_text(md)
     print(md)
 

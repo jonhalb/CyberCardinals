@@ -3,7 +3,8 @@
     python -m kairos_repro.model.train --config configs/paper_faithful.json --seed 0 [--quick]
 
 Contract (so make, the tests and the clean-checkout script can rely on it):
-- trains on common.TRAIN_IDS merged and time-ordered, no shuffling
+- trains on common.TRAIN_IDS one graph at a time in id order (= time order), edges never shuffled,
+  node memory and neighbour state reset between graphs (D-17)
 - seeds everything with common.seed_everything(seed)
 - writes results/<config name>/model_seed{N}.pt (git-ignored) and train_log_seed{N}.csv (committed)
 - --quick shortens training for the live demo; the real run's time is recorded in results/env_report.txt

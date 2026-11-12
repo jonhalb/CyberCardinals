@@ -22,7 +22,8 @@ cut at mean + 1.5 SD (Sec. 4.3.1); window score = mean of errors above the cut (
 From summaries of the authors' StreamSpot code (check): link-prediction loss with random negatives, neighbourhood 5,
 memory 200, Adam 1e-4, batch 1024, 10 epochs, `torch.manual_seed(12345)`, threshold = max validation loss,
 one-hot node types, fixed node table of 5,045,000 rows, PostgreSQL loading, test.py run twice.
-Still unverified: dataset checksum and sizes, per-scenario averages, the Table 3 Video Game / Download swap.
+Verified 2026-11-09 on the real file: checksum, 89,770,902 edges, 600 graphs, per-scenario averages, and the Table 3
+Video Game / Download swap (docs/verification_2026-11-09.md).
 
 ## Milestones (docs/backlog.csv holds the stories and points)
 | Milestone | Contents | Rubric lines it feeds |

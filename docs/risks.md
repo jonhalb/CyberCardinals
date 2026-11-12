@@ -2,8 +2,8 @@
 
 | # | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| R1 | Pipeline only runs on one member's machine (the rubric says that does not qualify) | Medium | High | Node-id compaction (ADR-0005); memcheck on all three machines; outsider clean-checkout test |
-| R2 | Memory needs exceed laptops (authors' README says at least 64 GB for their fixed table) | Medium | High | Compaction to the real node count; measure in M2-09 before building the model |
+| R1 | Pipeline only runs on one member's machine (the rubric says that does not qualify) | Medium | High | One graph at a time with local node ids (ADR-0005); memcheck on all three machines; outsider clean-checkout test |
+| R2 | Memory needs exceed laptops (authors' README says at least 64 GB for their fixed table) | Medium | High | Memory sized for one graph (max 9,284 nodes) and reset between graphs; the feasibility run fit on an 8 GB machine; confirm in M2-09 |
 | R3 | Live run too slow for a 10-15 minute talk | Medium | High | Time the full run early; define `QUICK=1`; recorded fallback in docs/demo/ |
 | R4 | Board filled in near the deadline (scores Missing) | Medium | High | Size stories now; move cards weekly; milestones and iterations set from day one |
 | R5 | Uneven story points, so unfair individual grades | Medium | Medium | Points planned per member in docs/backlog.csv are balanced; re-balance at each iteration review |
@@ -13,3 +13,4 @@
 | R9 | Dataset host changes or disappears | Low | High | Keep a verified copy of all.tar.gz on the team Drive; SHA-256 check in `make data` |
 | R10 | Missed presentation slot (15% off the capstone) or late deliverable (zero) | Low | Very high | Put every date in docs/schedule.md; dry run a week early |
 | R11 | Another team claims KAIROS | Low | High | Confirm approval of our paper with Dr. Parra now |
+| R12 | The max-validation threshold is fragile: one unusual benign validation graph raises it above most attacks (seen in the 2026-11-11 feasibility run) | High | High | Fix epochs and the threshold rule in the protocol BEFORE test results; report AUC from scores; add a labelled sensitivity table; explain in Gap-Explanation |
