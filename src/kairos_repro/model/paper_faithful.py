@@ -22,6 +22,7 @@ Config  configs/paper_faithful.json; every UNSTATED value has a row in docs/devi
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 from torch_geometric.nn import TransformerConv
 from torch_geometric.nn.models.tgn import IdentityMessage, LastAggregator, LastNeighborLoader, TGNMemory
 
@@ -32,11 +33,11 @@ MAX_NODES = 9_284  # largest StreamSpot graph (results/data_report.md); the memo
 
 
 class PaperFaithfulKairos(torch.nn.Module):
-    """Encoder half of KAIROS (story M3-01). The decoder and loss are story M3-02.
+    """KAIROS encoder (story M3-01) and decoder (story M3-02).
 
     Use, one graph at a time and one batch at a time, always in time order:
         model.start_graph(graph)          # graph from data.loading.localize(); wipes memory (D-17)
-        z = model.edge_embeddings(batch)  # 200 numbers per edge, built ONLY from the past
+        err = model.edge_errors(batch)    # one error per edge, from an embedding built ONLY from the past
         model.advance(batch)              # now the batch's edges become part of the past
     """
 
@@ -57,6 +58,13 @@ class PaperFaithfulKairos(torch.nn.Module):
         #    neighbour edge carries its 42-dim message and an encoding of how long ago it happened.
         self.conv = TransformerConv(state, per_node // heads, heads=heads,
                                     dropout=config["attention_dropout"], edge_dim=MSG_DIM + state)
+        # 4. Decoder (story M3-02): a small MLP that reads the 200-dim edge embedding and scores
+        #    each of the 26 edge types (paper Sec. 4.2; 26 not 9: D-07). The paper says "MLP" but
+        #    not its size: one hidden layer of 100 with tanh is our choice (deviation D-20).
+        emb = config["edge_embedding_dim"]
+        self.decoder = torch.nn.Sequential(
+            torch.nn.Linear(emb, emb // 2), torch.nn.Tanh(),
+            torch.nn.Linear(emb // 2, config["num_edge_types"]))
         self.register_buffer("_slot", torch.empty(num_nodes, dtype=torch.long))
         self._graph = None
 
@@ -95,5 +103,14 @@ class PaperFaithfulKairos(torch.nn.Module):
         self.neighbors.insert(src, dst)
         self.memory.detach()
 
-    def edge_errors(self, batch):
-        raise NotImplementedError("story M3-02: decoder and per-edge cross-entropy")
+    def edge_errors(self, batch: dict) -> torch.Tensor:
+        """Per-edge reconstruction error (story M3-02): cross-entropy of the true edge type.
+
+        The decoder reads the 200-dim embedding (built from the past only) and guesses which of
+        the 26 edge types this edge is. A confident wrong guess gives a large error; that error is
+        what model.scoring.graph_score() turns into a graph score. Training uses the mean of these.
+        Call advance(batch) afterwards so the batch becomes part of the past.
+        """
+        logits = self.decoder(self.edge_embeddings(batch))
+        target = torch.from_numpy(np.asarray(batch["edge_type"])).long()
+        return F.cross_entropy(logits, target, reduction="none")
