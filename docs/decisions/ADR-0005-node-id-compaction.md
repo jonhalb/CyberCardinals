@@ -14,5 +14,13 @@ only indices, so this is lossless within a graph. It drops any state carried acr
 local ids change those draws: note it in that ablation.
 
 Evidence. [x] distinct node count from `make stats` (5,044,482). [x] feasibility run 2026-11-11: full train + evaluate on a
-2-core, 8 GB machine; training peaked at 0.5 GB of RAM. [ ] memcheck on each team laptop (M1-01). [ ] M2-09: scores for one graph identical with local and
-global ids.
+2-core, 8 GB machine; training peaked at 0.5 GB of RAM. [ ] memcheck on each team laptop (M1-01). [x] M2-09: real model footprint and local ids against
+stored ids, measured by `make footprint`; numbers in the block below and in results/id_check.md.
+
+<!-- M2-09:start -->
+Measured by `make footprint` on 2026-11-16 (user jonas, 8.1 GB RAM); source files results/env_report.txt and results/id_check.md.
+- One full training epoch, one graph at a time: peak RSS 0.46GB.
+- After also scoring the largest graph: peak RSS 0.54GB.
+- After also building the stored-id table for graph(s) 101 (842,447 rows instead of 9284): peak RSS 1.37GB.
+- Local ids against stored ids, graph(s) 101: largest per-edge difference 0.00e+00; scores the same.
+<!-- M2-09:end -->

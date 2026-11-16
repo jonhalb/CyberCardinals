@@ -7,14 +7,14 @@ SEEDS ?= 0 1 2 3 4 12345
 QUICK ?= 0
 QUICKFLAG := $(if $(filter 1,$(QUICK)),--quick,)
 
-.PHONY: help data graphs stats baselines train evaluate compare reproduce seeds variant unit memcheck clean-checkout contribution
+.PHONY: help data graphs stats baselines train evaluate compare reproduce seeds variant unit memcheck footprint clean-checkout contribution
 
 help:
 	@echo "make reproduce [SEED=0] [QUICK=1]   data -> graphs -> stats -> baselines -> train -> evaluate -> compare"
 	@echo "make data|graphs|stats|baselines|train|evaluate|compare   individual steps"
 	@echo "make seeds     train + evaluate for SEEDS=$(SEEDS)"
 	@echo "make variant   authors' variant ablation (link prediction)"
-	@echo "make unit      unit tests    make memcheck   log memory    make contribution   refresh README table"
+	@echo "make unit      unit tests    make memcheck   log memory    make footprint   model memory + id check (M2-09)    make contribution   refresh README table"
 
 data:      ; $(PY) -m kairos_repro.data.download
 graphs:    ; $(PY) -m kairos_repro.data.build_graphs
@@ -44,5 +44,6 @@ variant:
 
 unit:      ; $(PY) -m pytest -q
 memcheck:  ; $(PY) -m kairos_repro.tools.memcheck
+footprint: ; $(PY) -m kairos_repro.tools.footprint --write-adr
 contribution: ; $(PY) scripts/contribution_table.py --git --write-readme README.md
 clean-checkout: ; bash scripts/clean_checkout_test.sh
