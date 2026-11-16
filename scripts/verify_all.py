@@ -187,7 +187,8 @@ def check_results():
     env = ROOT / "results/env_report.txt"
     if env.exists():
         lines = [l for l in env.read_text().splitlines() if l.strip() and not l.startswith("#")]
-        report("OK" if len(lines) >= 3 else "WARN", "%d memcheck line(s) in env_report.txt (need one per member for M1-01)" % len(lines))
+        users = {l.split("|")[1].strip() for l in lines if "| compacted |" in l}   # one memcheck line per person
+        report("OK" if len(users) >= 3 else "WARN", "memcheck lines from %d member(s) in env_report.txt (need all 3 for M1-01)" % len(users))
 
 
 def check_git_and_tests():

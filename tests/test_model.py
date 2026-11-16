@@ -144,3 +144,23 @@ def test_same_seed_same_training():
         opt = torch.optim.Adam(model.parameters(), lr=1e-3)
         runs.append(tr.train_one_graph(model, opt, g, batch_size=100))
     assert runs[0] == runs[1]
+
+
+# ---- story M2-09: local ids and stored ids give the same errors ------------------------------------
+
+def test_local_ids_match_stored_ids():
+    from kairos_repro.tools.footprint import copy_weights, edge_errors_of
+    cfg = c.load_config("paper_faithful")
+    r = np.random.RandomState(0)
+    ids = np.sort(r.choice(5000, size=40, replace=False))          # 40 nodes with scattered "stored" ids
+    stored = {"src": ids[r.randint(0, 40, 300)], "dst": ids[r.randint(0, 40, 300)],
+              "t": np.arange(1, 301, dtype=np.int64),
+              "src_type": r.randint(0, 8, 300).astype(np.int8), "dst_type": r.randint(0, 8, 300).astype(np.int8),
+              "edge_type": r.randint(0, 26, 300).astype(np.int8)}
+    torch.manual_seed(0)
+    small = PaperFaithfulKairos(cfg, num_nodes=64)
+    big = PaperFaithfulKairos(cfg, num_nodes=5000)
+    copy_weights(small, big)
+    a = edge_errors_of(small, localize(stored), 50)
+    b = edge_errors_of(big, dict(stored, num_nodes=np.int64(5000)), 50)
+    assert a.shape == (300,) and np.allclose(a, b, rtol=0, atol=1e-5)
