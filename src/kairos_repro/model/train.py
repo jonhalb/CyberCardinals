@@ -43,6 +43,16 @@ def read_config(path) -> dict:
         return json.load(fh)
 
 
+def build_model(config: dict):
+    """The model class a config asks for: the paper's edge-type decoder, or the authors' variant."""
+    if config["decoder"] == "edge_type_cross_entropy":
+        return PaperFaithfulKairos(config)
+    if config["decoder"] == "link_prediction_bce_random_negative":
+        from kairos_repro.model.authors_variant import AuthorsVariantKairos
+        return AuthorsVariantKairos(config)
+    raise ValueError("unknown decoder: %r" % (config["decoder"],))
+
+
 def out_dir(config: dict) -> Path:
     return c.RESULTS / config["name"]
 
@@ -80,7 +90,7 @@ def train(config: dict, seed: int, quick: bool = False, graph_ids=None, log=prin
     graph_ids = list(c.TRAIN_IDS if graph_ids is None else graph_ids)
     epochs = 1 if quick else int(config["epochs"])
     max_batches = QUICK_BATCHES if quick else None
-    model = PaperFaithfulKairos(config)
+    model = build_model(config)
     optimizer = torch.optim.Adam(model.parameters(), lr=config["lr"])
 
     # Load each training graph once; they are small (the largest has about 1.6M edges).
@@ -128,10 +138,10 @@ def train(config: dict, seed: int, quick: bool = False, graph_ids=None, log=prin
     return meta
 
 
-def load_trained(config: dict, seed: int) -> PaperFaithfulKairos:
+def load_trained(config: dict, seed: int):
     """For evaluate.py (story M3-03): the trained model, in eval mode."""
     ckpt = torch.load(out_dir(config) / ("model_seed%d.pt" % seed), map_location="cpu")
-    model = PaperFaithfulKairos(ckpt["config"])
+    model = build_model(ckpt["config"])
     model.load_state_dict(ckpt["state_dict"])
     if ckpt["meta"].get("quick"):
         print("WARNING: this model was trained with --quick; do not report its numbers")

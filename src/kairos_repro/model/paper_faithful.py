@@ -76,6 +76,19 @@ class PaperFaithfulKairos(torch.nn.Module):
         self.neighbors.reset_state()
         self._graph = {k: torch.from_numpy(np.asarray(graph[k])) for k in ("t", "src_type", "edge_type", "dst_type")}
 
+    def node_embeddings(self, nodes: torch.Tensor) -> torch.Tensor:
+        """One embedding per entry of `nodes` (ids may repeat), built from the past only."""
+        # every node asked for plus its recent neighbours, and the past edges that link them
+        n_id, edge_index, e_id = self.neighbors(nodes.unique())
+        self._slot[n_id] = torch.arange(n_id.size(0))
+        state, last_update = self.memory(n_id)
+        g = self._graph
+        past_msg = torch.from_numpy(one_hot_msg(g["src_type"][e_id].numpy(), g["edge_type"][e_id].numpy(),
+                                                g["dst_type"][e_id].numpy()))
+        age = self.memory.time_enc((last_update[edge_index[0]] - g["t"][e_id]).float())
+        z = self.conv(state, edge_index, torch.cat([age, past_msg], dim=-1))
+        return z[self._slot[nodes]]
+
     def edge_embeddings(self, batch: dict) -> torch.Tensor:
         """One 200-dim embedding per edge in the batch: [source node (100) | destination node (100)].
 
@@ -84,16 +97,8 @@ class PaperFaithfulKairos(torch.nn.Module):
         """
         src = torch.from_numpy(batch["src"]).long()
         dst = torch.from_numpy(batch["dst"]).long()
-        # every node in the batch plus its recent neighbours, and the past edges that link them
-        n_id, edge_index, e_id = self.neighbors(torch.cat([src, dst]).unique())
-        self._slot[n_id] = torch.arange(n_id.size(0))
-        state, last_update = self.memory(n_id)
-        g = self._graph
-        past_msg = torch.from_numpy(one_hot_msg(g["src_type"][e_id].numpy(), g["edge_type"][e_id].numpy(),
-                                                g["dst_type"][e_id].numpy()))
-        age = self.memory.time_enc((last_update[edge_index[0]] - g["t"][e_id]).float())
-        z = self.conv(state, edge_index, torch.cat([age, past_msg], dim=-1))
-        return torch.cat([z[self._slot[src]], z[self._slot[dst]]], dim=-1)
+        z = self.node_embeddings(torch.cat([src, dst]))
+        return torch.cat([z[:len(src)], z[len(src):]], dim=-1)
 
     def advance(self, batch: dict) -> None:
         """Add the batch's edges to the past: update node states and neighbour lists."""

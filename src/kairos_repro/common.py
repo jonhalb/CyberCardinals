@@ -43,7 +43,7 @@ TEST_ATTACK_IDS: List[int] = list(range(ATTACK_BASE, ATTACK_BASE + 100))
 TEST_IDS: List[int] = sorted(TEST_BENIGN_IDS + TEST_ATTACK_IDS)
 
 SEEDS = [0, 1, 2, 3, 4]
-AUTHORS_SEED = 12345  # torch.manual_seed value in the authors' train.py (confirm against source)
+AUTHORS_SEED = 12345  # the authors' scoring passes call torch.manual_seed(12345) per graph (D-02)
 
 PAPER_SOURCE = "KAIROS (IEEE S&P 2024), Table 4, row 'Manzoor et al.'"
 PAPER_TABLE4 = {"TP": 100, "TN": 375, "FP": 0, "FN": 0,
