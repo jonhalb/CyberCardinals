@@ -7,7 +7,7 @@ SEEDS ?= 0 1 2 3 4 12345
 QUICK ?= 0
 QUICKFLAG := $(if $(filter 1,$(QUICK)),--quick,)
 
-.PHONY: help data graphs stats baselines train evaluate compare reproduce seeds variant unit memcheck footprint clean-checkout contribution
+.PHONY: help data graphs stats baselines train evaluate compare reproduce seeds variant variant-train unit memcheck footprint clean-checkout contribution
 
 help:
 	@echo "make reproduce [SEED=0] [QUICK=1]   data -> graphs -> stats -> baselines -> train -> evaluate -> compare"
@@ -36,6 +36,8 @@ reproduce: data graphs stats baselines train evaluate compare
 
 seeds:
 	for s in $(SEEDS); do $(MAKE) train evaluate compare SEED=$$s || exit 1; done
+
+variant-train: ; $(PY) -m kairos_repro.model.train --config configs/authors_variant.json --seed $(SEED) $(QUICKFLAG)
 
 variant:
 	$(PY) -m kairos_repro.model.train --config configs/authors_variant.json --seed $(SEED)

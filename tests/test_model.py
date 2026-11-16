@@ -164,3 +164,59 @@ def test_local_ids_match_stored_ids():
     a = edge_errors_of(small, localize(stored), 50)
     b = edge_errors_of(big, dict(stored, num_nodes=np.int64(5000)), 50)
     assert a.shape == (300,) and np.allclose(a, b, rtol=0, atol=1e-5)
+
+
+# ---- story M3-06: the authors' variant (link prediction) ------------------------------------------
+
+def make_variant():
+    from kairos_repro.model.authors_variant import AuthorsVariantKairos
+    torch.manual_seed(0)
+    return AuthorsVariantKairos(c.load_config("authors_variant"), num_nodes=64)
+
+
+def variant_errors(model, g, batch_size=50):
+    model.start_graph(g)
+    out = []
+    with torch.no_grad():
+        for b in batches(g, batch_size):
+            out.append(model.edge_errors(b))
+            model.advance(b)
+    return torch.cat(out)
+
+
+def test_variant_sizes_follow_the_authors_code():
+    m = make_variant()
+    assert m.memory.memory.shape == (65, 200)            # 64 nodes + the reserved empty row, state 200
+    assert m.neighbors.size == 5
+    assert m.lin_final.in_features == 200 and not hasattr(m, "decoder")
+
+
+def test_variant_fake_destinations_are_real_nodes_or_the_empty_row():
+    m = make_variant()
+    m.start_graph(synth_graph())
+    m.negative_range = 100                                # make hits on real nodes common for the test
+    fake = m._fake_destinations(5000)
+    assert set(fake.tolist()) <= set(range(40)) | {m.empty_row}
+    assert (fake == m.empty_row).float().mean() > 0.4     # 61 of 101 draws are not nodes of this graph
+    m.advance(next(batches(synth_graph(), 50)))
+    assert torch.count_nonzero(m.memory.memory[m.empty_row]) == 0   # the empty row never gets a state
+
+
+def test_variant_scoring_is_repeatable_and_resets():
+    m, g = make_variant().eval(), synth_graph()
+    first = variant_errors(m, g)
+    variant_errors(m, synth_graph(seed=1))
+    again = variant_errors(m, g)
+    assert first.shape == (300,) and (first >= 0).all() and torch.equal(first, again)
+
+
+def test_variant_trains_through_the_same_loop(tmp_path, monkeypatch):
+    import kairos_repro.model.train as tr
+    fake = {0: synth_graph(n_edges=600, seed=0)}
+    monkeypatch.setattr(tr, "load_graph", lambda gid: {k: v for k, v in fake[gid].items() if k != "num_nodes"})
+    monkeypatch.setattr(c, "RESULTS", tmp_path)
+    cfg = dict(c.load_config("authors_variant"), epochs=6, batch_size=100, lr=1e-3)
+    meta = tr.train(cfg, seed=0, graph_ids=[0], log=lambda *_: None)
+    assert meta["last_epoch_loss"] < meta["first_epoch_loss"]
+    assert (tmp_path / "authors_variant" / "model_seed0.pt").exists()
+    assert type(tr.load_trained(cfg, 0)).__name__ == "AuthorsVariantKairos"
