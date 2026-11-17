@@ -1,0 +1,15 @@
+# scripts/check_neighbors.py 0 100 200 300 400 500 574  (size 20, batch 1024), 2026-11-17, WSL2 Ubuntu 22.04, torch 1.13.1+cpu, PyG 2.0.0
+graph   0  pyg LastNeighborLoader   wrong node updates   2060 /  14704 (14.01%)  recent edges missing   25051  insert time 0.03 s
+graph   0  ours RecentNeighbors     wrong node updates      0 /  14704 ( 0.00%)  recent edges missing       0  insert time 0.04 s
+graph 100  pyg LastNeighborLoader   wrong node updates    580 /   9979 ( 5.81%)  recent edges missing    6107  insert time 0.01 s
+graph 100  ours RecentNeighbors     wrong node updates      0 /   9979 ( 0.00%)  recent edges missing       0  insert time 0.01 s
+graph 200  pyg LastNeighborLoader   wrong node updates   1376 /  20549 ( 6.70%)  recent edges missing   17671  insert time 0.03 s
+graph 200  ours RecentNeighbors     wrong node updates      0 /  20549 ( 0.00%)  recent edges missing       0  insert time 0.03 s
+graph 300  pyg LastNeighborLoader   wrong node updates    311 /  13178 ( 2.36%)  recent edges missing    3024  insert time 0.01 s
+graph 300  ours RecentNeighbors     wrong node updates      0 /  13178 ( 0.00%)  recent edges missing       0  insert time 0.01 s
+graph 400  pyg LastNeighborLoader   wrong node updates   2774 /  24087 (11.52%)  recent edges missing   30746  insert time 0.07 s
+graph 400  ours RecentNeighbors     wrong node updates      0 /  24087 ( 0.00%)  recent edges missing       0  insert time 0.08 s
+graph 500  pyg LastNeighborLoader   wrong node updates   4749 /  24876 (19.09%)  recent edges missing   53590  insert time 0.05 s
+graph 500  ours RecentNeighbors     wrong node updates      0 /  24876 ( 0.00%)  recent edges missing       0  insert time 0.06 s
+graph 574  pyg LastNeighborLoader   wrong node updates  13308 /  40703 (32.70%)  recent edges missing  168283  insert time 0.14 s
+graph 574  ours RecentNeighbors     wrong node updates      0 /  40703 ( 0.00%)  recent edges missing       0  insert time 0.17 s
