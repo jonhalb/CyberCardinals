@@ -52,8 +52,8 @@ These are chores, so they are tracked here and not on the board. Tick each one w
 - [ ] Commit-approach vote, shared weekly hours and meeting time recorded in `docs/team.md`
 - [ ] Proposal corrections in `docs/proposal_corrections.md` applied
 - [ ] Real dates from Canvas filled into `docs/schedule.md` and the milestones
-- [ ] Scope email sent to Dr. Parra; answers recorded in `docs/decisions/ADR-0001-scope.md`
 - [ ] Wiki sidebar published from `docs/wiki/_Sidebar.md`
+- [ ] Each member's presentation section built and rehearsed (Jonas, Emiliano, Aaliyah); everyone can explain their own number
 - [ ] Timed dry run under 15 minutes; fallback recording plays offline
 
 ## Individual Contribution Summary Table
@@ -63,8 +63,8 @@ Story points come from the Project board; `scripts/contribution_table.py` recomp
 <!-- CONTRIB:START -->
 | Member | Stories done | Points earned | Points planned | Share of earned points |
 |---|---|---|---|---|
-| Jonas | 0 | 0 | 31 | 0.0% |
-| Emiliano | 0 | 0 | 32 | 0.0% |
-| Aaliyah | 0 | 0 | 29 | 0.0% |
-| **Team** | 0 | 0 | 92 | 100% |
+| Jonas | 0 | 0 | 29 | 0.0% |
+| Emiliano | 0 | 0 | 30 | 0.0% |
+| Aaliyah | 0 | 0 | 27 | 0.0% |
+| **Team** | 0 | 0 | 86 | 100% |
 <!-- CONTRIB:END -->
