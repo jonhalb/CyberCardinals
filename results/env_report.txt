@@ -1,6 +1,7 @@
 # One line per machine per run, appended by `make memcheck`:
 # date | user | cpu | ram | os | case | table size | peak RSS
 2026-11-12 | jonas | x86_64 | ram=8.1GB | Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35 | compacted | table=0.40GB | peak_rss=0.43GB
+2026-11-12 | efear | x86_64 | ram=16.6GB | Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35 | compacted | table=0.40GB | peak_rss=0.43GB
 2026-11-16 | jonas | x86_64 | ram=8.1GB | Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35 | model_train_1_epoch_881643_edges | table=0.01GB | peak_rss=0.46GB
 2026-11-16 | jonas | x86_64 | ram=8.1GB | Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35 | model_score_largest_graph_574_716176_edges | table=0.01GB | peak_rss=0.54GB
 2026-11-16 | jonas | x86_64 | ram=8.1GB | Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.35 | stored_id_table_graph_101 | table=0.61GB | peak_rss=1.37GB
