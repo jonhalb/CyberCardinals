@@ -73,12 +73,20 @@ def check_backlog():
 
 def check_board(rows):
     print("\n2. GitHub board (issues, milestones, labels)")
-    res = run(["gh", "issue", "list", "--state", "all", "--limit", "500",
-               "--json", "number,title,body,labels,milestone,assignees,state"])
+    fields = "number,title,body,labels,milestone,assignees,state"
+    res = run(["gh", "issue", "list", "--state", "all", "--limit", "500", "--json", fields + ",stateReason"])
+    if res.returncode != 0:      # an older gh without stateReason
+        res = run(["gh", "issue", "list", "--state", "all", "--limit", "500", "--json", fields])
     if res.returncode != 0:
         report("FAIL", "gh could not list issues: %s" % res.stderr.strip()[:200])
         return
     issues = json.loads(res.stdout)
+    # Stories the team dropped are closed as "not planned" and have no backlog row: that is correct.
+    dropped = [i for i in issues if (i.get("stateReason") or "").upper() == "NOT_PLANNED"]
+    issues = [i for i in issues if i not in dropped]
+    if dropped:
+        report("OK", "%d issue(s) closed as not planned, ignored: %s" % (
+            len(dropped), ", ".join("#%d" % i["number"] for i in sorted(dropped, key=lambda i: i["number"]))))
     handles = json.loads((ROOT / "scripts/handles.json").read_text())
     by_id = {}
     for i in issues:
