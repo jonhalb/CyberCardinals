@@ -199,6 +199,15 @@ def check_results():
         report("OK" if len(users) >= 3 else "WARN", "memcheck lines from %d member(s) in env_report.txt (need all 3 for M1-01)" % len(users))
 
 
+def check_deviations_in_wiki():
+    """Story M4-02: every row of docs/deviations.md has a row on the Method and Deviations Wiki page."""
+    dev = set(re.findall(r"^\| (D-\d\d) \|", (ROOT / "docs/deviations.md").read_text(), re.M))
+    wiki = set(re.findall(r"^\| (D-\d\d) \|", (ROOT / "docs/wiki/Method-and-Deviations.md").read_text(), re.M))
+    missing = sorted(dev - wiki)
+    report("FAIL" if missing else "OK", "deviations missing from the Method and Deviations page: %s" % ", ".join(missing)
+           if missing else "all %d deviations appear on the Method and Deviations Wiki page" % len(dev))
+
+
 def check_git_and_tests():
     print("\n5. Git and tests")
     br = run(["git", "branch", "--show-current"]).stdout.strip()
@@ -225,6 +234,7 @@ def main():
     if not a.no_gh:
         check_board(rows)
     check_text(rows)
+    check_deviations_in_wiki()
     check_results()
     check_git_and_tests()
     print("\nSummary: %d OK, %d WARN, %d FAIL" % (counts["OK"], counts["WARN"], counts["FAIL"]))
