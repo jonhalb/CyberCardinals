@@ -220,3 +220,17 @@ def test_variant_trains_through_the_same_loop(tmp_path, monkeypatch):
     assert meta["last_epoch_loss"] < meta["first_epoch_loss"]
     assert (tmp_path / "authors_variant" / "model_seed0.pt").exists()
     assert type(tr.load_trained(cfg, 0)).__name__ == "AuthorsVariantKairos"
+
+
+# ---- deviation D-26: which neighbour sampler each track uses ---------------------------------------
+
+def test_each_track_uses_its_neighbour_sampler():
+    from torch_geometric.nn.models.tgn import LastNeighborLoader
+    from kairos_repro.data.neighbors import RecentNeighbors
+    from kairos_repro.model.authors_variant import AuthorsVariantKairos
+    main = PaperFaithfulKairos(c.load_config("paper_faithful"), num_nodes=16)
+    variant = AuthorsVariantKairos(c.load_config("authors_variant"), num_nodes=16)
+    assert isinstance(main.neighbors, RecentNeighbors)
+    assert isinstance(variant.neighbors, LastNeighborLoader)
+    old_config = {k: v for k, v in c.load_config("paper_faithful").items() if k != "neighbor_sampler"}
+    assert isinstance(PaperFaithfulKairos(old_config, num_nodes=16).neighbors, LastNeighborLoader)

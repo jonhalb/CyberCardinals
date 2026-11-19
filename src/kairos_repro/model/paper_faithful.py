@@ -26,6 +26,8 @@ import torch.nn.functional as F
 from torch_geometric.nn import TransformerConv
 from torch_geometric.nn.models.tgn import IdentityMessage, LastAggregator, LastNeighborLoader, TGNMemory
 
+from kairos_repro.data.neighbors import RecentNeighbors
+
 from kairos_repro.common import MSG_DIM
 from kairos_repro.data.graph_encoding import one_hot_msg
 
@@ -53,7 +55,17 @@ class PaperFaithfulKairos(torch.nn.Module):
                                 message_module=IdentityMessage(MSG_DIM, state, state),
                                 aggregator_module=LastAggregator())
         # 2. Neighbour list: remembers each node's 20 most recent edges (paper Sec. 5, |N| = 20).
-        self.neighbors = LastNeighborLoader(num_nodes, size=config["neighbors"])
+        # Which "most recent neighbours" list to keep (deviation D-26). "exact" keeps exactly the 20
+        # most recent edges per node (data/neighbors.py). "pyg" is PyG 2.0.0's LastNeighborLoader, which
+        # keeps a wrong set when a node has more than 20 edges in one batch; the authors' code uses it,
+        # so the authors' variant keeps it. A config without the setting gets "pyg", the old behaviour.
+        sampler = config.get("neighbor_sampler", "pyg")
+        if sampler == "exact":
+            self.neighbors = RecentNeighbors(num_nodes, size=config["neighbors"])
+        elif sampler == "pyg":
+            self.neighbors = LastNeighborLoader(num_nodes, size=config["neighbors"])
+        else:
+            raise ValueError("unknown neighbor_sampler: %r" % (sampler,))
         # 3. Attention layer: mixes a node's state with its recent neighbours' states. Each
         #    neighbour edge carries its 42-dim message and an encoding of how long ago it happened.
         self.conv = TransformerConv(state, per_node // heads, heads=heads,
