@@ -7,6 +7,7 @@
   "embedding_dim": 200,
   "time_dim": 200,
   "neighbors": 5,
+  "neighbor_sampler": "pyg",
   "time_windows_per_graph": 1,
   "graph_score": {
     "rule": "mean_loss"
@@ -24,6 +25,7 @@
   "_provenance": {
     "memory_dim, embedding_dim, time_dim, neighbors, attention_heads, attention_dropout, lr, epochs, batch_size, negative_range": "authors' StreamSpot/src/train.py (memory_dim = time_dim = embedding_dim = 200; LastNeighborLoader size=5; max_node_num = 5045000; Adam lr 0.0001; BATCH=1024; 10 epochs)",
     "graph_score, threshold, authors_seed": "authors' StreamSpot/src/test.py (graph loss = mean loss per edge; threshold = max validation loss; torch.manual_seed(12345) at the start of each graph)",
-    "ours": "one graph at a time with local ids and memory reset between training graphs (D-17); reserved empty row for the random node (D-22)"
+    "ours": "one graph at a time with local ids and memory reset between training graphs (D-17); reserved empty row for the random node (D-22)",
+    "neighbor_sampler": "D-26: PyG's LastNeighborLoader, as in the authors' code"
   }
 }

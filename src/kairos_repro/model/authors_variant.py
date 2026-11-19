@@ -34,6 +34,7 @@ class AuthorsVariantKairos(PaperFaithfulKairos):
     def __init__(self, config: dict, num_nodes: int = MAX_NODES):
         dim = config["memory_dim"]                                   # 200
         encoder = {"node_state_dim": dim, "neighbors": config["neighbors"],
+                   "neighbor_sampler": config.get("neighbor_sampler", "pyg"),
                    "edge_embedding_dim": 2 * config["embedding_dim"],   # parent halves it: 200 per node
                    "attention_heads": config["attention_heads"], "attention_dropout": config["attention_dropout"],
                    "num_edge_types": 1}

@@ -6,9 +6,14 @@
   "node_feature": "one_hot_node_type",
   "node_state_dim": 100,
   "neighbors": 20,
+  "neighbor_sampler": "exact",
   "edge_embedding_dim": 200,
   "time_windows_per_graph": 1,
-  "graph_score": {"rule": "mean_of_errors_above_mean_plus_sd", "sd_multiplier": 1.5, "ddof": 0},
+  "graph_score": {
+    "rule": "mean_of_errors_above_mean_plus_sd",
+    "sd_multiplier": 1.5,
+    "ddof": 0
+  },
   "threshold": "max_validation_score",
   "optimizer": "adam",
   "lr": 0.0001,
@@ -23,6 +28,7 @@
     "graph_score": "paper Sec. 4.3.1 and 4.3.3; population SD is our choice (UNSTATED)",
     "threshold": "paper: set from benign validation data (Sec. 4.3.3). 'Max' is from the authors' code (UNSTATED in paper)",
     "node_feature": "UNSTATED for StreamSpot (no paths or IPs, so hierarchical hashing does not apply); one-hot type follows the authors' code",
-    "optimizer, lr, epochs, batch_size, attention_heads, attention_dropout": "UNSTATED in paper; values from the authors' StreamSpot code (confirm against source)"
+    "optimizer, lr, epochs, batch_size, attention_heads, attention_dropout": "UNSTATED in paper; values from the authors' StreamSpot code (confirm against source)",
+    "neighbor_sampler": "D-26: exactly the 20 most recent neighbours, as the paper describes (Sec. 4.2); PyG's loader keeps a wrong set on 2-33% of node updates (results/neighbor_check.txt)"
   }
 }
