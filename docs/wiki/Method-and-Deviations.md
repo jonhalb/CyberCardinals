@@ -2,7 +2,7 @@
 
 Story M4-02. Owner: Jonas Halbrook. This page says how our pipeline works, in the order it runs, and lists every
 place where the paper leaves a choice open or where we do something different. The full table with sources and
-dates is [`docs/deviations.md`](https://github.com/jonhalb/CyberCardinals/blob/main/docs/deviations.md); every row of it (D-01 to D-25) appears below.
+dates is [`docs/deviations.md`](https://github.com/jonhalb/CyberCardinals/blob/main/docs/deviations.md); every row of it (D-01 to D-26) appears below.
 
 We rebuilt the pipeline ourselves. The authors' repository (github.com/ubc-provenance/kairos, commit 0e0b633) was
 read for values the paper does not state and is used as an outside cross-check. None of its files are copied.
@@ -96,6 +96,7 @@ Environment: Python 3.9, torch 1.13.1 (CPU), torch-geometric 2.0.0, scikit-learn
 | D-21 | Order inside a training step | not stated | predict from the past, update the weights, then add the batch to the memory | Low |
 | D-25 | Rows loaded | all 89.8 million edges | all 89,770,902 lines. The authors' loader drops the last 902 lines (all in graph 599, a benign test graph) because its final partial batch is never written | Very low: one benign test graph loses 0.4% of its edges in their run |
 | D-24 | AUC | reported, method not stated | AUC from the continuous scores, with the 0/1 version (the authors' method) next to it | Yes: they differ whenever a graph is misclassified |
+| D-26 | Which neighbours a node sees | its most recent neighbours, 20 of them | main model: exactly the 20 most recent per node (`data/neighbors.py`); the authors' variant keeps PyG's loader; a config setting chooses. PyG 2.0.0's loader, also used by the authors, keeps a wrong set whenever a node has more than 20 edges in one batch: 2.4% to 32.7% of node updates on real graphs (`results/neighbor_check.txt`) | Possible |
 
 ### C. Parts of the paper we do not run
 | ID | Part | Paper says | We do | Could it move the number? |
