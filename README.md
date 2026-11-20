@@ -63,8 +63,8 @@ Story points come from the Project board; `scripts/contribution_table.py` recomp
 <!-- CONTRIB:START -->
 | Member | Stories done | Points earned | Points planned | Share of earned points |
 |---|---|---|---|---|
-| Jonas | 4 | 18 | 29 | 43.9% |
-| Emiliano | 6 | 23 | 30 | 56.1% |
-| Aaliyah | 0 | 0 | 27 | 0.0% |
-| **Team** | 10 | 41 | 86 | 100% |
+| Jonas | 4 | 18 | 29 | 37.5% |
+| Emiliano | 6 | 23 | 30 | 47.9% |
+| Aaliyah | 2 | 7 | 27 | 14.6% |
+| **Team** | 12 | 48 | 86 | 100% |
 <!-- CONTRIB:END -->
