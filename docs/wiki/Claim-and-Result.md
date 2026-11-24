@@ -49,18 +49,41 @@ each graph is already a single time window.
 
 ## Our result
 
-**Status: the paper-faithful model has not been evaluated yet** (stories M3-03 and M3-05).
-This table is filled from `results/paper_faithful/comparison_seed0.md` once it exists; every cell will then hold a number.
+**Outcome, in the [Evaluation Protocol](Evaluation-Protocol)'s wording: documented divergence** for the headline
+paper-faithful model. The authors' variant (below) reproduces the row exactly, but it is an ablation and never the headline.
+
+From `results/paper_faithful/comparison_seed0.md`:
 
 | Metric | Paper (Table 4) | Ours (paper-faithful, seed 0) | Difference |
 |---|---|---|---|
-| TP / TN / FP / FN | 100 / 375 / 0 / 0 | pending M3-03 | pending |
-| Precision | 1.000 | pending M3-03 | pending |
-| Recall | 1.000 | pending M3-03 | pending |
-| Accuracy | 1.000 | pending M3-03 | pending |
-| AUC | 1.000 | pending M3-03 | pending |
+| TP / TN / FP / FN | 100 / 375 / 0 / 0 | 60 / 372 / 3 / 40 | -40 / -3 / +3 / +40 |
+| Precision | 1.000 | 0.952 | -0.048 |
+| Recall | 1.000 | 0.600 | -0.400 |
+| Accuracy | 1.000 | 0.909 | -0.091 |
+| AUC (0/1 predictions, as the paper's authors compute it) | 1.000 | 0.796 | -0.204 |
+| AUC (from scores, threshold-free) | - | 0.961 | - |
+
+**Why it misses** (from `results/paper_faithful/eval_meta_seed0.json`): the threshold, 4.04, is set by validation graph 119,
+a Gmail graph. The lowest attack score (3.71) is below the highest benign test score (4.08), so attack and benign scores
+overlap: 40 attacks fall under the threshold and 3 benign graphs go over it. The model still ranks attacks high (AUC from
+scores 0.961); the threshold rule decides the hard numbers. Ranked reasons: [Gap Explanation](Gap-Explanation).
 
 Seeds 0-4 and the authors' seed 12345: pending M3-05 (`results/seeds_summary.md`).
+
+### The authors' variant (ablation, not the headline)
+
+Same split and threshold rule, with what the authors' StreamSpot code does instead of what the paper describes: a
+link-prediction decoder, memory 200, 5 neighbours from PyG's loader (D-26), and graph score = mean loss (track V; D-22, D-23). From `results/authors_variant/comparison_seed0.md`:
+
+| Metric | Paper (Table 4) | Authors' variant (seed 0) | Difference |
+|---|---|---|---|
+| TP / TN / FP / FN | 100 / 375 / 0 / 0 | 100 / 375 / 0 / 0 | 0 |
+| Precision / Recall / Accuracy | 1.000 / 1.000 / 1.000 | 1.000 / 1.000 / 1.000 | 0 |
+| AUC (0/1 predictions) / AUC (from scores) | 1.000 / - | 1.000 / 1.000 | 0 |
+
+Every attack graph scores at least 0.919 and every benign test graph at most 0.763, against a threshold of 0.767
+(`results/authors_variant/eval_meta_seed0.json`). In short: **the authors' code reproduces Table 4; the model the paper
+describes does not, on our run.**
 
 ### Baselines on the same split (already measured)
 
