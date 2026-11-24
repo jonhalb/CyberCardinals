@@ -1,0 +1,11 @@
+{
+  "config": "authors_variant",
+  "seed": 0,
+  "threshold": 0.7669216394424438,
+  "threshold_set_by_validation_graph": 120,
+  "graphs_scored": 595,
+  "seconds": 717.3,
+  "lowest_attack_score": 0.9193817973136902,
+  "highest_benign_test_score": 0.7634632587432861,
+  "graph_score_rule": "mean_loss"
+}
