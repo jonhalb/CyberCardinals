@@ -1,0 +1,11 @@
+{
+  "config": "paper_faithful",
+  "seed": 0,
+  "threshold": 3.947466116330495,
+  "threshold_set_by_validation_graph": 420,
+  "graphs_scored": 595,
+  "seconds": 876.0,
+  "lowest_attack_score": 3.685324292242822,
+  "highest_benign_test_score": 3.94556650933255,
+  "graph_score_rule": "mean_of_errors_above_mean_plus_sd"
+}
